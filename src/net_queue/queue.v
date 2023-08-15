@@ -12,7 +12,7 @@ fn Queue.new(name string) Queue {
 }
 
 fn (mut q Queue) add(msg string) {
-	e := Entry{msg: msg}
+	e := Entry.new(msg)
 	q.entries << e
 	q.size++
 }
@@ -37,22 +37,22 @@ fn EntryResult.new(entry Entry, has_more bool, index int) EntryResult {
 }
 
 
-fn (mut q Queue) read(unread bool, remove bool) ?EntryResult{
-	if q.size == 0 {
+fn (mut q Queue) read(unread bool, remove bool, starting_idx int) ?EntryResult{
+	if q.size == 0 || starting_idx >= q.size {
 		return none
 	}
 	mut has_more := false
 	mut e := Entry{}
 	mut idx := -1
 	if !unread {
-		q.entries[0].read = true
-		e = q.entries[0]
-		idx = 0
-		if q.entries.len > 1 {
+		q.entries[starting_idx].read = true
+		e = q.entries[starting_idx]
+		idx = starting_idx
+		if q.entries.len > starting_idx+1 {
 			has_more = true
 		}
 	} else {
-		for i in 0 .. q.size {
+		for i in starting_idx .. q.size {
 			if !q.entries[i].read {
 				if idx == -1 {
 					q.entries[i].read = true

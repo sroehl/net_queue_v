@@ -5,6 +5,7 @@ module net_queue
 struct NetMessageEntry {
 	queue string
 	msg string
+	index int = 0
 }
 
 
@@ -22,7 +23,7 @@ fn (entry NetMessageEntry) write_entry(mut queues []Queue) NetReponse {
 fn (entry NetMessageEntry) read_entry(mut queues []Queue) NetReponse {
 		for i, queue in queues {
 		if queue.name == entry.queue {
-			result := queues[i].read(false, false) or {
+			result := queues[i].read(false, false, entry.index) or {
 				println("Here")
 				return NetReponse.new(Status.error, "Error: " + err.str())
 			}
