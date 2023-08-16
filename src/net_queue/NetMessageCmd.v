@@ -71,7 +71,19 @@ fn (cmd NetMessageCmd) handle_cmd(mut queues []Queue) NetReponse{
 			}
 		}
 		.purge_queue {
-			// TODO: Purge queue
+			queue_name := cmd.arguments.str()
+			if queue_exists(queue_name, queues) {
+				mut queue_idx := 0
+				for i, queue in queues {
+					if queue.name == queue_name {
+						queue_idx = i
+						break
+					}
+				}
+				queues[queue_idx] = Queue.new(queue_name)
+			} else {
+				return NetReponse.new(Status.error, "Queue does not exist")
+			}
 		}
 		.list_queues {
 			queue_names := queues.map(it.name).join(',')

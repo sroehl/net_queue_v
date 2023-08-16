@@ -5,7 +5,7 @@ module net_queue
 struct NetMessageEntry {
 	queue string
 	msg string
-	index int = 0
+	index int
 }
 
 
