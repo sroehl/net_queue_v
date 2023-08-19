@@ -42,7 +42,6 @@ struct NetMessageCmd {
 }
 
 fn (cmd NetMessageCmd) handle_cmd(mut queues []Queue) NetReponse{
-	println("handle_cmd ${cmd.command}")
 	match CommandName.new(cmd.command) {
 		.exit {
 			exit(0)

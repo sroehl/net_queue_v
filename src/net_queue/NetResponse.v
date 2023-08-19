@@ -3,11 +3,13 @@ module net_queue
 enum Status {
 	success
 	error
+	fail
 	has_more
+	unknown
 }
 
 struct NetReponse {
-	status Status
+	status Status = .unknown
 	msg string
 	mut:
 		index int = -1
